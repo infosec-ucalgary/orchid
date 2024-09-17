@@ -1,1 +1,1 @@
-Ucalgary Cyber Security Club Discord Bot
+# Ucalgary Cyber Security Club Discord Bot
