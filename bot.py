@@ -16,7 +16,8 @@ bot = commands.Bot(command_prefix=";!", intents=intents)
 
 @bot.event
 async def on_ready() -> None:
-    print(f"We have logged in as {bot.user}")
+    _ = await bot.tree.sync()
+    print(f"We have logged in as {bot.user} and synced commands!")
 
 
 @bot.event
@@ -38,6 +39,11 @@ async def on_member_update(before: discord.Member, after: discord.Member):
             return
 
         await member.add_roles(role)
+
+
+@bot.tree.command(name="ping", description="Get the bot's latency.")
+async def ping(inter: discord.Interaction) -> None:
+    await inter.response.send_message(f"Pong! ({round(bot.latency * 1000)}ms)")
 
 
 def main() -> None:
