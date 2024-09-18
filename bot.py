@@ -54,7 +54,7 @@ async def rules(ctx: commands.Context):
             if ctx.author.guild_permissions.administrator:
                 title = ""
                 response = (
-                    "**This server is the only official University of Calgary Cyber Security Discord server. The following rules are in place for everybody’s sake. Please follow them if you wish to stay.**\n\n"
+                    ":warning: **This server is the only official University of Calgary Cyber Security Discord server. The following rules are in place for everybody’s sake. Please follow them if you wish to stay.**\n\n"
                     "**Behaviour**\n"
                     "- Be respectful: No harassment, intimidation, or making people feel uncomfortable, unwelcome, or afraid.\n\n"
                     "**Ethical Conduct**\n"
