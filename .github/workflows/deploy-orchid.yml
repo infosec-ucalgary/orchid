@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.CYBERA_RSA }}
           port: 22
           source: ".,!infra" 
-          target: /home/${{ secrets.CYBERA_USERNAME }}/orchid-bot/
+          target: /home/${{ secrets.CYBERA_USERNAME }}/repos/orchid-bot/
 
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@v1.0.3
@@ -31,18 +31,18 @@ jobs:
           port: 22
 
           envs: TOKEN
+          script: |
+            set -euo pipefail
+            
+            cd /home/${{ secrets.CYBERA_USERNAME }}/repos/orchid-bot/
+  
+            echo "[+] Injecting secrets..."
+            echo "TOKEN=$TOKEN" > .env
+  
+            echo "[+] Rebuilding and starting bot..."
+            sudo docker compose up -d --build
+  
+            echo "[+] Cleaning up dangling images..."
+            sudo docker image prune -f
         env:
           TOKEN: ${{ secrets.TOKEN }}
-        script: |
-          set -euo pipefail
-          
-          cd /home/${{ secrets.CYBERA_USERNAME }}/orchid-bot/
-
-          echo "[+] Injecting secrets..."
-          echo "TOKEN=$TOKEN" > .env
-
-          echo "[+] Rebuilding and starting bot..."
-          sudo docker compose up -d --build
-
-          echo "[+] Cleaning up dangling images..."
-          sudo docker image prune -f
