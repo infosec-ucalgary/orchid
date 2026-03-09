@@ -1,7 +1,7 @@
 services:
-  bot:
+  orchid:
     build: .
-    container_name: discord_bot_prod
+    container_name: orchid_bot_prod
     restart: unless-stopped
     environment:
       - TOKEN=${TOKEN}
