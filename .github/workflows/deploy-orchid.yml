@@ -45,4 +45,4 @@ jobs:
             echo "[+] Cleaning up dangling images..."
             sudo docker image prune -f
         env:
-          TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.ORCHID_DISCORD_TOKEN }}
