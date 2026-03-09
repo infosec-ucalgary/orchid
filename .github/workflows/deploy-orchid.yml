@@ -24,25 +24,24 @@ jobs:
 
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          TOKEN: ${{ secrets.ORCHID_DISCORD_TOKEN }}
         with:
           host: ${{ secrets.CYBERA_HOST }}
           username: ${{ secrets.CYBERA_USERNAME }}
           key: ${{ secrets.CYBERA_RSA }}
           port: 22
-
           envs: TOKEN
           script: |
             set -euo pipefail
-            
+
             cd /home/${{ secrets.CYBERA_USERNAME }}/repos/orchid-bot/
   
             echo "[+] Injecting secrets..."
-            echo "TOKEN=$TOKEN" > .env
+            echo "TOKEN=${TOKEN}" > .env
   
             echo "[+] Rebuilding and starting bot..."
-            sudo docker compose up -d --build
+            sudo docker compose --env-file .env up -d --build
   
             echo "[+] Cleaning up dangling images..."
             sudo docker image prune -f
-        env:
-          TOKEN: ${{ secrets.ORCHID_DISCORD_TOKEN }}
