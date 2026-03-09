@@ -1,0 +1,48 @@
+name: deploy-orchid
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.CYBERA_HOST }}
+          username: ${{ secrets.CYBERA_USERNAME }}
+          key: ${{ secrets.CYBERA_RSA }}
+          port: 22
+          source: ".,!infra" 
+          target: /home/${{ secrets.CYBERA_USERNAME }}/orchid-bot/
+
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.CYBERA_HOST }}
+          username: ${{ secrets.CYBERA_USERNAME }}
+          key: ${{ secrets.CYBERA_RSA }}
+          port: 22
+
+          envs: TOKEN
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        script: |
+          set -euo pipefail
+          
+          cd /home/${{ secrets.CYBERA_USERNAME }}/orchid-bot/
+
+          echo "[+] Injecting secrets..."
+          echo "TOKEN=$TOKEN" > .env
+
+          echo "[+] Rebuilding and starting bot..."
+          sudo docker compose up -d --build
+
+          echo "[+] Cleaning up dangling images..."
+          sudo docker image prune -f

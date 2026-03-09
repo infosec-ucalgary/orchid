@@ -1,0 +1,7 @@
+services:
+  bot:
+    build: .
+    container_name: discord_bot_prod
+    restart: unless-stopped
+    environment:
+      - TOKEN=${TOKEN}
