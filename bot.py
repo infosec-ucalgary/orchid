@@ -9,10 +9,12 @@ _ = load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.guilds = True
+intents.guild_messages=True
+
 
 bot = commands.Bot(command_prefix=";", intents=intents)
-
 
 @bot.event
 async def on_ready() -> None:
