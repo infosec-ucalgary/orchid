@@ -4,14 +4,12 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-
 _ = load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 
 intents = discord.Intents.default()
 intents.guilds = True
-intents.guild_messages=True
 
 
 bot = commands.Bot(command_prefix=";", intents=intents)
