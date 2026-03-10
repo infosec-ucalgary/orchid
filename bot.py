@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 _ = load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
+GUILD_ID = 912856141862678530
 
 intents = discord.Intents.default()
 intents.guilds = True
@@ -16,7 +17,8 @@ bot = commands.Bot(command_prefix=";", intents=intents)
 
 @bot.event
 async def on_ready() -> None:
-    _ = await bot.tree.sync()
+    guild = discord.Object(id=GUILD_ID)
+    await bot.tree.sync(guild=guild)
     print(f"We have logged in as {bot.user} and synced commands!")
 
 
